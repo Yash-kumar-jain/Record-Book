@@ -1,0 +1,168 @@
+<%- include('./partials/header.ejs') %>
+<div class="w-full px-4 py-6 md:px-20 md:py-10"> 
+    <div id="changePhoto" class="h-full w-full backdrop-blur-md z-10 absolute rounded-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center hidden"> 
+        <form class="h-auto w-11/12 md:w-96 bg-zinc-400 flex flex-col justify-evenly items-center p-4 rounded-md relative" action="/profilePicture" method="post" enctype="multipart/form-data">
+            <i id="close" class="ri-close-large-line top-1 right-2 absolute"></i> 
+            <label for="image" class="circle h-40 w-40 md:h-60 md:w-60 aspect-square bg-gray-300 rounded-full overflow-hidden">
+                <% if (profilePictureBase64 === ''){ %>
+                    <img id="imagePreview" src="../public/images/default_profile_pic.jpg" class="h-full w-full object-cover" alt="">
+                <% } else { %>
+                    <img id="imagePreview" src="data:image/png;base64,<%=profilePictureBase64 %>" class="h-full w-full object-cover" alt="">
+                <% } %>
+                <input onchange="previewImage(this)" type="file" id="image" hidden name="profilePicture">
+            </label>
+            <input type="submit" class="p-1 h-10 rounded-md w-24 bg-blue-700 text-white" value="Change">
+        </form>
+    </div>
+
+    <h1 class="text-xl md:text-3xl  flex gap-3">
+        <img class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" id="inputImage" src="data:image/png;base64,<%=profilePictureBase64 %>" alt=""> 
+        <%= user.name %>, Hello 👋🏻 
+    </h1>
+
+    <h3 class="opacity-60 mb-6 text-zinc-900 text-sm md:text-base">You have total <%= user.hisaabs.length %> records available.</h3>
+
+    <div class="flex justify-between px-5 mb-4 gap-2 ">
+        <form class="flex flex-col md:flex h-10 gap-5  " action="/profile" method="get">
+            <button id="filterClick" class="px-4 py-2 flex items-center gap-4 font-medium text-sm text-zinc-500 bg-zinc-200 rounded-md">Filters <i class="ri-sound-module-fill"></i></button>
+            <div id="bydate" class="opacity-0 px-2 py-1 flex items-center gap-4 font-medium text-sm text-zinc-500 bg-zinc-200 rounded-md transition duration-[50ms] ease-linear">By Date<i class="ri-calendar-line"></i></div>
+            <div id="filter" class="hidden dates flex gap-5 items-center transition duration-[50ms] ease-linear bg-black">
+                <input class="bg-zinc-200 text-sm px-4 py-2 rounded-md" name="startDate" type="date">
+                <input class="bg-zinc-200 text-sm px-4 py-2 rounded-md" name="endDate" type="date">
+            </div>
+            <select id="filter-first" class="opacity-0 outline-none transition duration-[50ms] ease-linear" name="byDate">
+                <option value="-1">Newest First</option>
+                <option value="1">Oldest First</option>
+            </select>
+            <input id="filter-button" class="opacity-0 px-6 py-2 bg-blue-500 text-white rounded-md transition duration-[50ms] ease-linear" type="submit" value="Filter">
+        </form>
+        
+        <div class="search-bar-container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" class="w-full md:w-3/4" placeholder="Search...">
+                <button id="searchButton" type="submit"> <i class="ri-search-line"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="scrollbar" class="flex flex-wrap bg-slate-300 min-h-[400px] max-h-[600px] overflow-y-auto rounded-lg p-5 gap-4 md:gap-12">
+        <% if(user.hisaabs.length > 0) { %>
+            <% for(var i = 0; i < user.hisaabs.length; i++) { %>
+                <div class="hisaab-item bg-zinc-100 p-3 px-5 rounded-md h-32 w-full md:w-[350px] ml-0 md:ml-8 mt-2 relative">
+                    <div class="flex gap-4 md:gap-10 items-center">
+                        <div class="flex justify-center gap-2 items-start">
+                            <% if(user.hisaabs[i].encrypted) { %>
+                                <div class="px-3 py-2 rounded-md flex gap-2 items-center bg-red-500 text-white">
+                                    <i class="text-xs ri-lock-2-line"></i>
+                                    <h3 class="text-sm">Encrypted</h3>
+                                </div>
+                            <% } else { %>
+                                <div class="px-3 py-2 rounded-md flex gap-2 items-center bg-teal-600 text-white">
+                                    <i class="text-xs ri-check-line"></i>
+                                    <h3 class="text-sm">Available</h3>
+                                </div>
+                            <% } %>
+                            <% if(user.hisaabs[i].shareable) { %>
+                                <div class="px-3 py-2 rounded-md bg-zinc-300/70 flex items-center justify-center">
+                                    <i class="text-sm ri-share-line"></i>
+                                </div>
+                            <% } %>
+                            <% if(user.hisaabs[i].important) { %>
+                                <div class="px-3 py-2 rounded-md bg-red-400 flex items-center justify-center text-white text-sm">
+                                    <i class="ri-star-fill"></i>
+                                </div>
+                            <% } %>
+                        </div>
+                        <h3 class="text-xs text-zinc-400 absolute top-2 right-4">Created on <%= new Date(user.hisaabs[i].createdAt).getDate() %>-<%= new Date(user.hisaabs[i].createdAt).getMonth() + 1 %>-<%= new Date(user.hisaabs[i].createdAt).getFullYear() %></h3>
+                    </div>
+                    <div class="mt-3">
+                        <h3 class="font-medium text-sm md:text-lg truncate"><%= user.hisaabs[i].title %></h3>
+                        <a class="text-zinc-400 text-xs md:text-sm hover:text-zinc-950" href="/hisaab/view/<%= user.hisaabs[i]._id %>">view hisaab</a>
+                    </div>
+                </div>
+            <% } %>
+        <% } else { %>
+            <h3 class="text-zinc-400 font-sans">No hisaabs found.</h3>
+        <% } %>
+    </div>
+</div>
+
+    <script>
+        function previewImage(event){
+            const file = event.files[0];
+            console.log(file)
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    console.log(e.target.result);
+                    const imgElement = document.getElementById('imagePreview');
+                    imgElement.src = e.target.result;
+                    imgElement.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    document.querySelector("#filterClick").addEventListener("click", function(e) {
+        e.preventDefault();
+        const filter = document.querySelector("#filter");
+        const bydate = document.querySelector("#bydate");
+        const filterFirst = document.querySelector("#filter-first");
+        const filterButton = document.querySelector("#filter-button");
+
+        if (filter.classList.contains("opacity-0")) {
+            filter.classList.remove("opacity-0");
+            bydate.classList.remove("opacity-0");
+            filterFirst.classList.remove("opacity-0");
+            filterButton.classList.remove("opacity-0");
+        } else {
+            filter.classList.add("opacity-0");
+            bydate.classList.add("opacity-0");
+            filterFirst.classList.add("opacity-0");
+            filterButton.classList.add("opacity-0");
+        }});
+
+        document.querySelector("#bydate")
+            .addEventListener("click", function (event) {
+                if (document.querySelector(".dates").classList.contains("hidden")) {
+                    document.querySelector(".dates").classList.remove("hidden");
+                }
+                else {
+                    document.querySelector(".dates").classList.add("hidden");
+                }
+            })
+
+            document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const hisaabs = document.querySelectorAll('.hisaab-item');
+            hisaabs.forEach(hisaab => {
+                const title = hisaab.querySelector('h3.font-medium').innerText.toLowerCase();
+                if (title.includes(query)) {
+                    hisaab.style.display = 'block';
+                } else {
+                    hisaab.style.display = 'none';
+                }
+            });
+        });
+
+        
+        document.querySelector("#inputImage")
+            .addEventListener("click", function (event) {
+                if (document.querySelector("#changePhoto").classList.contains("hidden")){
+                    document.querySelector("#changePhoto").classList.remove("hidden");
+                }
+                else {
+                    document.querySelector("#changePhoto").classList.add("hidden");
+                }
+            })
+        document.querySelector("#close")
+            .addEventListener("click", function (event) {
+                if (document.querySelector("#changePhoto").classList.contains("hidden")){
+                    document.querySelector("#changePhoto").classList.remove("hidden");
+                }
+                else {
+                    document.querySelector("#changePhoto").classList.add("hidden");
+                }
+            })
+
+    </script>
+    <%- include('./partials/footer.ejs') %>

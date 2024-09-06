@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Book</title>
+    <link rel="icon" href="images/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<style>
+    #scrollbar::-webkit-scrollbar {
+        width: 12px;
+    }
+    
+    #scrollbar::-webkit-scrollbar-track {
+        border-radius: 8px;
+        background-color: #95a5a6;
+        border: 1px solid #cacaca;
+    }
+    
+    #scrollbar::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: #2c3e50;
+    }
+
+    .search-bar-container button:active {
+        scale: 1.02;
+        background-color: #cbd5e1;
+    }
+
+    .search-bar-container {
+        /* position: absolute;
+        top: 24%;
+        left: 50%;
+        transform: translateX(-50%); */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+    }
+
+    .search-bar {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        background-color: #cbd5e1;
+        border-radius: 25px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .search-bar ::placeholder {
+        color: #2c3e50;
+    }
+
+    #searchInput {
+        border: none;
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 29rem;
+        background-color: transparent;
+        font-size: 16px;
+        outline: none;
+        color: #2c3e50;
+    }
+
+    #searchButton {
+        border: 1px solid transparent;
+        background-color: #2c3e50;
+        width: 50px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        outline: none;
+    }
+
+    #searchButton i {
+        font-size: 17px;
+        color: white;
+    }
+
+    .custom-file-input {
+        display: none;
+    }
+
+    .custom-file-label {
+        display: inline-block;
+        padding: 10px 12px;
+        color: #a7a7a7;
+        background-color: #ffffff;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        border: 1px solid #f5f5f5;
+        align-items: center;
+    }
+
+    .custom-file-label i {
+        margin-right: 10px;
+    }
+
+    .links {
+    position: relative;
+}
+.link-item {
+    position: relative;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+}
+
+.link-item::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: -4px;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease-in-out;
+}
+
+.link-item:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.link-item:hover {
+    transform: translateY(-2px);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+
+</style>
+
+<body >
+    <div class="navbar -mb-6 relative flex flex-col md:flex-row justify-between items-center md:h-28 w-full px-6 md:px-24 py-6 md:py-10">
+        <img class="h-16 md:h-full scale-125 mb-4 md:mb-0" src="/images/logo.png" alt="Record Book">
+        
+        <% const error2 = typeof error === 'undefined' ? "" : error %>
+        <% if(error2.length > 0) { %>
+            <div id="errorDiv" class="absolute top-20 left-1/2 transform -translate-x-1/2 px-3 py-2 bg-red-500 rounded-md">
+                <h3 class="text-red-200 p-2">
+                    <%= error2 %>
+                </h3>
+            </div>
+        <% } %>
+
+        <% const show = typeof isLoggedIn === 'undefined' ? true : false %>
+        <% if(show) { %>
+            <div class="links flex sm:flex-row gap-2 sm:gap-4 items-center text-center text-wrap">
+                <a class="link-item relative px-4 py-2 text-sm sm:text-base font-semibold transition-all" href="/profile">Profile</a>
+                <a class="link-item relative px-4 py-2 text-sm sm:text-base font-semibold transition-all" href="/hisaab/create">Create new Record</a>
+                <a class="link-item relative px-4 py-2 text-sm sm:text-base font-semibold text-red-500 transition-all" href="/logout">Logout</a>
+            </div>
+            
+            
+        <% } %>
+    </div>
+
+
