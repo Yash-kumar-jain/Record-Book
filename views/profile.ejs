@@ -21,29 +21,40 @@
     </h1>
 
     <h3 class="opacity-60 mb-6 text-zinc-900 text-sm md:text-base">You have total <%= user.hisaabs.length %> records available.</h3>
-
-    <div class="flex justify-between px-5 mb-4 gap-2 ">
-        <form class="flex flex-col md:flex h-10 gap-5  " action="/profile" method="get">
-            <button id="filterClick" class="px-4 py-2 flex items-center gap-4 font-medium text-sm text-zinc-500 bg-zinc-200 rounded-md">Filters <i class="ri-sound-module-fill"></i></button>
-            <div id="bydate" class="opacity-0 px-2 py-1 flex items-center gap-4 font-medium text-sm text-zinc-500 bg-zinc-200 rounded-md transition duration-[50ms] ease-linear">By Date<i class="ri-calendar-line"></i></div>
-            <div id="filter" class="hidden dates flex gap-5 items-center transition duration-[50ms] ease-linear bg-black">
-                <input class="bg-zinc-200 text-sm px-4 py-2 rounded-md" name="startDate" type="date">
-                <input class="bg-zinc-200 text-sm px-4 py-2 rounded-md" name="endDate" type="date">
+    <div class="flex flex-col md:flex-row justify-between px-5 mb-4 gap-2 md:mb-10">
+        <form class="flex flex-col  md:flex-row gap-2 w-full" action="/profile" method="get">
+            <button id="filterClick" class="px-4 py-2 flex items-center gap-4 font-medium text-sm text-zinc-500 bg-zinc-200 rounded-md h-10 w-full md:w-28">Filters <i class="ri-sound-module-fill"></i></button>
+            <div class="flex sm:flex-col md:flex-col md:w-full overflow-x-auto relative gap-2"> 
+    
+                <!-- All filters will appear below the button on mobile, but sideways on larger screens -->
+                <div id="bydate" class="hidden flex md:flex-row w-full md:w-auto mt-2 md:mt-0 md:ml-4 gap-2 transition duration-[50ms] ease-linear">
+                    <div class="flex items-center gap-4 font-medium text-sm text-zinc-500 bg-zinc-200 rounded-md px-2 py-1">By Date<i class="ri-calendar-line"></i></div>
+    
+                    <div id="filter" class="flex md:flex-row gap-2 transition duration-[50ms] ease-linear">
+                        <input class="bg-zinc-200 text-sm px-4 py-2 rounded-md w-full md:w-auto" name="startDate" type="date">
+                        <input class="bg-zinc-200 text-sm px-4 py-2 rounded-md w-full md:w-auto" name="endDate" type="date">
+                    </div>
+    
+                    <select name="byDate" id="filter-first" class="w-full md:w-auto bg-zinc-200 text-sm outline-none px-3 py-1 rounded-md mt-2 md:mt-0 md:text-center">
+                        <option value="-1">Newest First</option>
+                        <option value="1">Oldest First</option>
+                    </select>
+    
+                    <input id="filter-button" class="px-6 py-2 bg-blue-500 text-white rounded-md w-full md:w-auto mt-2 md:mt-0" type="submit" value="Filter">
+                </div>
             </div>
-            <select id="filter-first" class="opacity-0 outline-none transition duration-[50ms] ease-linear" name="byDate">
-                <option value="-1">Newest First</option>
-                <option value="1">Oldest First</option>
-            </select>
-            <input id="filter-button" class="opacity-0 px-6 py-2 bg-blue-500 text-white rounded-md transition duration-[50ms] ease-linear" type="submit" value="Filter">
         </form>
-        
-        <div class="search-bar-container">
+    
+        <div class="search-bar-container mt-4 md:mt-0">
             <div class="search-bar">
                 <input type="text" id="searchInput" class="w-full md:w-3/4" placeholder="Search...">
                 <button id="searchButton" type="submit"> <i class="ri-search-line"></i></button>
             </div>
         </div>
     </div>
+    
+    
+    
 
     <div id="scrollbar" class="flex flex-wrap bg-slate-300 min-h-[400px] max-h-[600px] overflow-y-auto rounded-lg p-5 gap-4 md:gap-12">
         <% if(user.hisaabs.length > 0) { %>
@@ -76,7 +87,7 @@
                         <h3 class="text-xs text-zinc-400 absolute top-2 right-4">Created on <%= new Date(user.hisaabs[i].createdAt).getDate() %>-<%= new Date(user.hisaabs[i].createdAt).getMonth() + 1 %>-<%= new Date(user.hisaabs[i].createdAt).getFullYear() %></h3>
                     </div>
                     <div class="mt-3">
-                        <h3 class="font-medium text-sm md:text-lg truncate"><%= user.hisaabs[i].title %></h3>
+                        <h3 class="font-medium text-sm md:text-lg truncate "><%= user.hisaabs[i].title %></h3>
                         <a class="text-zinc-400 text-xs md:text-sm hover:text-zinc-950" href="/hisaab/view/<%= user.hisaabs[i]._id %>">view hisaab</a>
                     </div>
                 </div>
@@ -109,19 +120,19 @@
         const filterFirst = document.querySelector("#filter-first");
         const filterButton = document.querySelector("#filter-button");
 
-        if (filter.classList.contains("opacity-0")) {
-            filter.classList.remove("opacity-0");
-            bydate.classList.remove("opacity-0");
-            filterFirst.classList.remove("opacity-0");
-            filterButton.classList.remove("opacity-0");
+        if (filter.classList.contains("hidden")) {
+            filter.classList.remove("hidden");
+            bydate.classList.remove("hidden");
+            filterFirst.classList.remove("hidden");
+            filterButton.classList.remove("hidden");
         } else {
-            filter.classList.add("opacity-0");
-            bydate.classList.add("opacity-0");
-            filterFirst.classList.add("opacity-0");
-            filterButton.classList.add("opacity-0");
+            filter.classList.add("hidden");
+            bydate.classList.add("hidden");
+            filterFirst.classList.add("hidden");
+            filterButton.classList.add("hidden");
         }});
 
-        document.querySelector("#bydate")
+        document.querySelector("#bydateButton")
             .addEventListener("click", function (event) {
                 if (document.querySelector(".dates").classList.contains("hidden")) {
                     document.querySelector(".dates").classList.remove("hidden");
@@ -130,6 +141,13 @@
                     document.querySelector(".dates").classList.add("hidden");
                 }
             })
+
+            document.getElementById('filterClick').addEventListener('click', function(e) {
+    e.preventDefault();
+    const filterSection = document.getElementById('bydate');
+    filterSection.classList.toggle('hidden');
+});
+
 
             document.getElementById('searchInput').addEventListener('input', function() {
             const query = this.value.toLowerCase();
