@@ -146,3 +146,20 @@ module.exports.profilePictureController =  async function(req,res){
 
 }
 
+module.exports.removeProfilePicture =  async function(req,res){
+    try{
+        let user = await userModel.findOne({email:req.user.email})
+
+        user.profilePicture = ""
+        await user.save()
+        res.redirect("/profile")
+    }
+    catch(err){
+        console.error(err)
+        res.status(500).send("Internal Server Error")
+    }
+    
+
+}
+
+
