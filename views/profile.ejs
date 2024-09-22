@@ -24,7 +24,7 @@
 
         <h1 class="text-xl md:text-3xl flex gap-3">
             <img class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" id="inputImage" src="/images//default_profile_pic.jpg" alt=""> 
-            <%= user.name %>, Hello 👋🏻 
+            <%= user.username %>, Hello 👋🏻 
         </h1>
         
         <% } else { %>
@@ -115,18 +115,42 @@
 </div>
 
 <script>
-document.querySelector("#filterClick").addEventListener("click", function(e) {
-    e.preventDefault();
-    const filter = document.querySelector("#filter");
-    const bydate = document.querySelector("#bydate");
-    const filterFirst = document.querySelector("#filter-first");
-    const filterButton = document.querySelector("#filter-button");
+        document.querySelector("#filterClick").addEventListener("click", function(e) {
+            e.preventDefault();
+        const filter = document.querySelector("#filter");
+        const bydate = document.querySelector("#bydate");
+        const filterFirst = document.querySelector("#filter-first");
+        const filterButton = document.querySelector("#filter-button");
 
-    filter.classList.toggle("hidden");
-    bydate.classList.toggle("hidden");
-    filterFirst.classList.toggle("hidden");
-    filterButton.classList.toggle("hidden");
-});
+        if (filter.classList.contains("hidden")) {
+            filter.classList.remove("hidden");
+            bydate.classList.remove("hidden");
+            filterFirst.classList.remove("hidden");
+            filterButton.classList.remove("hidden");
+        } else {
+            filter.classList.add("hidden");
+            bydate.classList.add("hidden");
+            filterFirst.classList.add("hidden");
+            filterButton.classList.add("hidden");
+        }});
+
+        document.querySelector("#bydateButton")
+            .addEventListener("click", function (event) {
+                if (document.querySelector(".dates").classList.contains("hidden")) {
+                    document.querySelector(".dates").classList.remove("hidden");
+                }
+                else {
+                    document.querySelector(".dates").classList.add("hidden");
+                }
+            })
+            
+            document.getElementById('filterClick').addEventListener('click', function(e) {
+                e.preventDefault();
+                const filterSection = document.getElementById('bydate');
+                filterSection.classList.toggle('hidden');
+            });
+            
+            
 
 document.getElementById('searchInput').addEventListener('input', function() {
     const query = this.value.toLowerCase();
