@@ -1,14 +1,12 @@
 <%- include('./partials/header.ejs') %>
 <div class="w-full px-4 py-6 md:px-20 md:py-10"> 
-    <div id="changePhoto" class="h-full w-full backdrop-blur-md z-10 absolute rounded-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center hidden">
+    <div id="changePhoto" class="h-full w-full backdrop-blur-md z-10 absolute rounded-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-center hidden">
         <form id="profileForm" class="h-auto w-11/12 md:w-96 bg-zinc-400 flex flex-col justify-evenly items-center p-4 rounded-md relative" action="/profilePicture" method="post" enctype="multipart/form-data">
             <i id="close" class="ri-close-large-line top-1 right-2 absolute"></i>
             <label for="image" class="circle h-40 w-40 md:h-60 md:w-60 aspect-square bg-gray-300 rounded-full overflow-hidden">
                 <% if (profilePictureBase64 === "") { %>
-
                     <img id="imagePreview" src="/images/default_profile_pic.jpg" class="h-full w-full object-cover" alt="">
-                    <% } else { %>
-
+                <% } else { %>
                     <img id="imagePreview" src="data:image/png;base64,<%=profilePictureBase64 %>" class="h-full w-full object-cover" alt="">
                 <% } %>
                 <input onchange="previewImage(this)" type="file" id="image" hidden name="profilePicture">
@@ -21,21 +19,16 @@
     </div>
 
     <% if (profilePictureBase64 === "") { %>
-
         <h1 class="text-xl md:text-3xl flex gap-3">
-            <img class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" id="inputImage" src="/images//default_profile_pic.jpg" alt=""> 
+            <img class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" id="inputImage" src="/images/default_profile_pic.jpg" alt=""> 
             <%= user.username %>, Hello 👋🏻 
         </h1>
-        
-        <% } else { %>
-
-            <h1 class="text-xl md:text-3xl flex gap-3">
-                <img class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" id="inputImage" src="data:image/png;base64,<%=profilePictureBase64 %>" alt=""> 
-                <%= user.name %>, Hello 👋🏻 
-            </h1>
-        
+    <% } else { %>
+        <h1 class="text-xl md:text-3xl flex gap-3">
+            <img class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" id="inputImage" src="data:image/png;base64,<%= profilePictureBase64 %>" alt=""> 
+            <%= user.username %>, Hello 👋🏻 
+        </h1>
     <% } %>
-
 
     <h3 class="opacity-60 mb-6 text-zinc-900 text-sm md:text-base">You have total <%= user.hisaabs.length %> records available.</h3>
 
@@ -43,20 +36,16 @@
         <form class="flex flex-col  md:flex-row gap-2 w-full" action="/profile" method="get">
             <button id="filterClick" class="px-4 py-2 flex items-center gap-4 font-medium text-sm text-zinc-500 bg-zinc-200 rounded-md h-10 w-full md:w-28">Filters <i class="ri-sound-module-fill"></i></button>
             <div class="flex sm:flex-col md:flex-col md:w-full overflow-x-auto relative gap-2"> 
-    
                 <div id="bydate" class="hidden flex md:flex-row w-full md:w-auto mt-2 md:mt-0 md:ml-4 gap-2 transition duration-[50ms] ease-linear">
                     <div class="flex items-center gap-4 font-medium text-sm text-zinc-500 bg-zinc-200 rounded-md px-2 py-1">By Date<i class="ri-calendar-line"></i></div>
-    
                     <div id="filter" class="flex md:flex-row gap-2 transition duration-[50ms] ease-linear">
                         <input class="bg-zinc-200 text-sm px-4 py-2 rounded-md w-full md:w-auto" name="startDate" type="date">
                         <input class="bg-zinc-200 text-sm px-4 py-2 rounded-md w-full md:w-auto" name="endDate" type="date">
                     </div>
-    
                     <select name="byDate" id="filter-first" class="w-full md:w-auto bg-zinc-200 text-sm outline-none px-3 py-1 rounded-md mt-2 md:mt-0 md:text-center">
                         <option value="-1">Newest First</option>
                         <option value="1">Oldest First</option>
                     </select>
-    
                     <input id="filter-button" class="px-6 py-2 bg-blue-500 text-white rounded-md w-full md:w-auto mt-2 md:mt-0" type="submit" value="Filter">
                 </div>
             </div>
@@ -115,8 +104,8 @@
 </div>
 
 <script>
-        document.querySelector("#filterClick").addEventListener("click", function(e) {
-            e.preventDefault();
+    document.querySelector("#filterClick").addEventListener("click", function(e) {
+        e.preventDefault();
         const filter = document.querySelector("#filter");
         const bydate = document.querySelector("#bydate");
         const filterFirst = document.querySelector("#filter-first");
@@ -132,54 +121,30 @@
             bydate.classList.add("hidden");
             filterFirst.classList.add("hidden");
             filterButton.classList.add("hidden");
-        }});
-
-        document.querySelector("#bydateButton")
-            .addEventListener("click", function (event) {
-                if (document.querySelector(".dates").classList.contains("hidden")) {
-                    document.querySelector(".dates").classList.remove("hidden");
-                }
-                else {
-                    document.querySelector(".dates").classList.add("hidden");
-                }
-            })
-            
-            document.getElementById('filterClick').addEventListener('click', function(e) {
-                e.preventDefault();
-                const filterSection = document.getElementById('bydate');
-                filterSection.classList.toggle('hidden');
-            });
-            
-            
-
-document.getElementById('searchInput').addEventListener('input', function() {
-    const query = this.value.toLowerCase();
-    const hisaabs = document.querySelectorAll('.hisaab-item');
-    hisaabs.forEach(hisaab => {
-        const title = hisaab.querySelector('h3.font-medium').innerText.toLowerCase();
-        hisaab.style.display = title.includes(query) ? 'block' : 'none';
+        }
     });
-});
 
-document.getElementById('inputImage').addEventListener('click', function() {
-    document.getElementById('changePhoto').classList.remove('hidden');
-});
+    document.querySelector('#inputImage').addEventListener('click', function() {
+        const changePhotoSection = document.getElementById('changePhoto');
+        changePhotoSection.classList.remove('hidden');
+        changePhotoSection.classList.add('flex'); // Show as flex
+    });
 
-function previewImage(input) {
-    const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        document.getElementById('imagePreview').src = e.target.result;
-    };
-    if (file) {
-        reader.readAsDataURL(file);
+    document.getElementById('close').addEventListener('click', function() {
+        const changePhotoSection = document.getElementById('changePhoto');
+        changePhotoSection.classList.add('hidden');
+        changePhotoSection.classList.remove('flex'); // Remove flex when hiding
+    });
+
+    function previewImage(input) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
     }
-}
-
-
-document.getElementById('close').addEventListener('click', function() {
-    document.getElementById('changePhoto').classList.add('hidden');
-});
 </script>
-
 <%- include('./partials/footer.ejs') %>
