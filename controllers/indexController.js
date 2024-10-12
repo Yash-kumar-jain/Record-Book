@@ -25,7 +25,7 @@ module.exports.registerController = [
         let user = await userModel.findOne({ email });
         if (user) {
         req.flash("error", "User already registered");
-        res.redirect("/login");
+        res.redirect("/");
         return;
     }
 
