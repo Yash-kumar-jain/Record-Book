@@ -92,7 +92,7 @@
                         </h3>                          
                     </div>
                     <div class="mt-3">
-                        <h3 class="font-medium text-sm md:text-lg truncate "><%= user.hisaabs[i].title %></h3>
+                        <h3 id="tittle" class="font-medium text-sm md:text-lg truncate "><%= user.hisaabs[i].title %></h3>
                         <a class="text-zinc-400 text-xs md:text-sm hover:text-zinc-950" href="/hisaab/view/<%= user.hisaabs[i]._id %>">view hisaab</a>
                     </div>
                 </div>
@@ -146,5 +146,23 @@
             reader.readAsDataURL(file);
         }
     }
+
+    document.getElementById("searchInput").addEventListener("input", function() {
+    const searchTerm = this.value.toLowerCase();
+    const hisaabItems = document.querySelectorAll(".hisaab-item");
+
+    hisaabItems.forEach(item => {
+        const title = item.querySelector("#tittle").innerText.toLowerCase();
+        
+        if (title.includes(searchTerm)) {
+            item.style.display = "block"; // Show matching items
+        } else {
+            item.style.display = "none"; // Hide non-matching items
+        }
+    });
+});
+
+
+
 </script>
 <%- include('./partials/footer.ejs') %>
