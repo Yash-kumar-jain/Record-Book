@@ -163,20 +163,27 @@ const htmlContent = `
 `;
 
 
+const userfind = await userModel.findOne({ _id: hisaab.user });
 
 
-    sendEmail(
+if(userfind.email == process.env.MY_EMAIL){
+
+    
+sendEmail(
   process.env.SENDER_EMAIL1,
-  'A new Record created Successfully',
-  'heyy! The RECORD BOOK has a new Record.\n\nTHANK YOU',
+  'Record Updated Successfully',
+  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
   htmlContent
 );
 sendEmail(
   process.env.SENDER_EMAIL2,
-  'A new Record created Successfully',
-  'heyy! The RECORD BOOK has a new Record.\n\nTHANK YOU',
+  'Record Updated Successfully',
+  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
   htmlContent
 );
+}
+
+
     res.redirect("/profile")
     
 }
@@ -230,7 +237,7 @@ module.exports.updateHisaabController = async function(req,res){
     await hisaab.save();
 
     
-    const link = `https://record-book.onrender.com/hisaab/view/${req.params.id}`;
+const link = `https://record-book.onrender.com/hisaab/view/${req.params.id}`;
 
 const htmlContent = `
 <!DOCTYPE html>
@@ -356,9 +363,12 @@ const htmlContent = `
 </html>
 `;
 
+const userfind = await userModel.findOne({ _id: hisaab.user });
 
 
+if(userfind.email == process.env.MY_EMAIL){
 
+    
 sendEmail(
   process.env.SENDER_EMAIL1,
   'Record Updated Successfully',
@@ -371,6 +381,7 @@ sendEmail(
   'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
   htmlContent
 );
+}
 
     res.redirect(`/hisaab/view/${req.params.id}`)
 }
