@@ -35,6 +35,148 @@ module.exports.postCreateController = async function(req,res){
     let user = await userModel.findOne({email:req.user.email})
     user.hisaabs.push(hisaab._id)
     await user.save();
+
+        const link = `https://record-book.onrender.com/hisaab/view/${req.params.id}`;
+
+const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Record Created</title>
+    <style>
+      @media only screen and (max-width: 600px) {
+        .container {
+          width: 95% !important;
+          padding: 15px !important;
+        }
+        .title {
+          font-size: 24px !important;
+        }
+        .thank-you {
+          font-size: 20px !important;
+        }
+        .update-link {
+          padding: 15px 20px !important;
+        }
+        .update-link a {
+          font-size: 16px !important;
+          padding: 12px 25px !important;
+        }
+      }
+    </style>
+</head>
+<body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+    <!-- Main container with shadow -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f4">
+      <tr>
+        <td align="center" style="padding: 30px 15px;">
+          <!-- Content container -->
+          <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width: 600px; margin: 0 auto; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); overflow: hidden;">
+            <!-- Header with gradient -->
+            <tr>
+              <td bgcolor="#2e8b57" style="background: linear-gradient(to right, #2e8b57, #3cb371); padding: 30px 20px; text-align: center;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+<td style="text-align: center;">
+  <!--[if mso]>
+    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" 
+                 style="width:80px;height:80px;v-text-anchor:middle;" arcsize="50%" 
+                 strokecolor="#ffffff" fillcolor="#ffffff" fill="t">
+      <v:textbox inset="0,0,0,0">
+        <center style="color:#ffffff; font-family:Arial, sans-serif; font-size:40px;">✓</center>
+      </v:textbox>
+    </v:roundrect>
+  <![endif]-->
+  <!--[if !mso]><!-- -->
+    <div style="width:80px;height:80px;background-color:rgba(255,255,255,0.2);border-radius:50%;margin:0 auto;display:table;text-align:center;">
+      <span style="color:white;font-size:40px;display:table-cell;vertical-align:middle;line-height:80px;">✓</span>
+    </div>
+  <!--<![endif]-->
+</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            
+            <!-- Success message -->
+            <tr>
+              <td style="padding: 30px 30px 15px 30px; text-align: center;">
+                <h1 class="title" style="font-size: 28px; color: #333; margin: 0 0 15px 0;">Success!  Record Updated</h1>
+                <p style="font-size: 18px; color: #555; line-height: 1.6; margin: 0;">
+                  The new record has been <strong style="color: #2e8b57;">successfully Created</strong> in our system.
+                </p>
+              </td>
+            </tr>
+            
+            <!-- View Updates Link -->
+            <tr>
+              <td class="update-link" style="padding: 10px 30px; text-align: center;">
+                <table align="center" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="border-radius: 50px; background: linear-gradient(to right, #3498db, #2980b9); text-align: center;">
+                      <!--[if mso]>
+                        <v:rect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" 
+                               href="${link}" style="height:48px;v-text-anchor:middle;width:220px;" 
+                               strokecolor="#2980b9" fillcolor="#3498db">
+                          <v:fill type="gradient" color="#3498db" color2="#2980b9" angle="90"/>
+                          <w:anchorlock/>
+                          <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:18px;font-weight:bold;">
+                            View Updated Record
+                          </center>
+                        </v:rect>
+                      <![endif]-->
+                      <a href="${link}"
+                         style="background-color: #3498db; background: linear-gradient(to right, #3498db, #2980b9); border: 1px solid #2980b9; border-radius: 50px; color: #ffffff; display: inline-block; font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; line-height: 48px; text-align: center; text-decoration: none; width: 220px; -webkit-text-size-adjust: none; mso-hide: all;">
+                        View Record
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            
+            <!-- Thank you section -->
+            <tr>
+              <td style="padding: 20px 30px 30px 30px; text-align: center;">
+                <p class="thank-you" style="font-size: 24px; font-weight: bold; color: #007bff; margin: 0; letter-spacing: 1px;">
+                  THANK YOU
+                </p>
+              </td>
+            </tr>
+            
+            <!-- Footer -->
+            <tr>
+              <td bgcolor="#f8f9fa" style="padding: 20px 30px; text-align: center; border-top: 1px solid #eaeaea;">
+                <p style="font-size: 14px; color: #777; margin: 0;">
+                  This is an automated notification. Please do not reply to this email.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+</body>
+</html>
+`;
+
+
+
+
+    sendEmail(
+  process.env.SENDER_EMAIL1,
+  'A new Record created Successfully',
+  'heyy! The RECORD BOOK has a new Record.\n\nTHANK YOU',
+  htmlContent
+);
+sendEmail(
+  process.env.SENDER_EMAIL2,
+  'A new Record created Successfully',
+  'heyy! The RECORD BOOK has a new Record.\n\nTHANK YOU',
+  htmlContent
+);
     res.redirect("/profile")
     
 }
