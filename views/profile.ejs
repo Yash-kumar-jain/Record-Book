@@ -1,22 +1,41 @@
 <%- include('./partials/header.ejs') %>
 <div class="w-full px-4 py-6 md:px-20 md:py-10"> 
-    <div id="changePhoto" class="h-full w-full backdrop-blur-md z-10 absolute rounded-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center hidden"> 
-        <form class="h-auto w-11/12 md:w-96 bg-zinc-400 flex flex-col justify-evenly items-center p-4 rounded-md relative" action="/profilePicture" method="post" enctype="multipart/form-data">
-            <i id="close" class="ri-close-large-line top-1 right-2 absolute"></i> 
-            <label for="image" class="circle h-40 w-40 md:h-60 md:w-60 aspect-square bg-gray-300 rounded-full overflow-hidden">
-                <% if (profilePictureBase64 === ''){ %>
-                    <img id="imagePreview" src="../public/images/default_profile_pic.jpg" class="h-full w-full object-cover" alt="">
-                <% } else { %>
-                    <img id="imagePreview" src="data:image/png;base64,<%=profilePictureBase64 %>" class="h-full w-full object-cover" alt="">
-                <% } %>
-                <input onchange="previewImage(this)" type="file" id="image" hidden name="profilePicture">
-            </label>
+    
+<!-- Modal -->
+<div id="changePhoto" class="h-full w-full backdrop-blur-md z-10 absolute rounded-md hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+    <form class="h-auto w-11/12 md:w-96 bg-zinc-400 flex flex-col justify-evenly items-center p-4 rounded-md relative" action="/profilePicture" method="post" enctype="multipart/form-data">
+        <i id="close" class="ri-close-large-line absolute top-1 right-2 cursor-pointer text-xl"></i> 
+
+        <label for="image" class="circle h-40 w-40 md:h-60 md:w-60 aspect-square bg-gray-300 rounded-full overflow-hidden cursor-pointer">
+            <% if (!profilePictureBase64 || profilePictureBase64 === '') { %>
+                <img id="imagePreview" src="/images/default_profile_pic.jpg" class="h-full w-full object-cover" alt="Default Profile Picture">
+            <% } else { %>
+                <img id="imagePreview" src="data:image/png;base64,<%= profilePictureBase64 %>" class="h-full w-full object-cover" alt="Uploaded Profile Picture">
+            <% } %>
+            <input onchange="previewImage(event)" type="file" id="image" hidden name="profilePicture">
+        </label>
+
+        <div class="flex gap-2 mt-4">
+            <!-- Submit button to change photo -->
             <input type="submit" class="p-1 h-10 rounded-md w-24 bg-blue-700 text-white" value="Change">
+
+            <!-- Remove Photo button -->
         </form>
-    </div>
+            <form action="/removeProfilePicture" method="get">
+        
+                <input type="submit" value="Remove" class="p-1 h-10 rounded-md w-24 bg-red-600 text-white">
+        </form>
+        </div>
+</div>
+
+
 
     <h1 class="text-xl md:text-3xl  flex gap-3">
-        <img class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" id="inputImage" src="data:image/png;base64,<%=profilePictureBase64 %>" alt=""> 
+                    <% if (!profilePictureBase64 || profilePictureBase64 === '') { %>
+                <img id="inputImage" class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" src="/images/default_profile_pic.jpg" class="h-full w-full object-cover" alt="Default Profile Picture">
+            <% } else { %>
+                <img id="inputImage" class="h-8 w-8 mb-2 md:h-10 md:w-10 rounded-full" src="data:image/png;base64,<%= profilePictureBase64 %>" class="h-full w-full object-cover" alt="Uploaded Profile Picture">
+            <% } %>
         <%= user.name %>, Hello 👋🏻 
     </h1>
 
@@ -100,21 +119,55 @@
     </div>
 </div>
 
-    <script>
-        function previewImage(event){
-            const file = event.files[0];
-            console.log(file)
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    console.log(e.target.result);
-                    const imgElement = document.getElementById('imagePreview');
-                    imgElement.src = e.target.result;
-                    imgElement.style.display = 'block';
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+      document.querySelector("#inputImage")
+            .addEventListener("click", function (event) {
+                if (document.querySelector("#changePhoto").classList.contains("hidden")){
+                    document.querySelector("#changePhoto").classList.remove("hidden");
                 }
-                reader.readAsDataURL(file);
+                else {
+                    document.querySelector("#changePhoto").classList.add("hidden");
+                }
+            })
+        document.querySelector("#close")
+            .addEventListener("click", function (event) {
+                if (document.querySelector("#changePhoto").classList.contains("hidden")){
+                    document.querySelector("#changePhoto").classList.remove("hidden");
+                }
+                else {
+                    document.querySelector("#changePhoto").classList.add("hidden");
+                }
+            })
+
+
+
+
+
+
+
+});
+
+function previewImage(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imgElement = document.getElementById("imagePreview");
+            if (imgElement) {
+                imgElement.src = e.target.result;
+                imgElement.style.display = "block";
             }
-        }
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("#filterClick").addEventListener("click", function(e) {
         e.preventDefault();
         const filter = document.querySelector("#filter");
@@ -164,25 +217,9 @@
             });
         });
 
-        
-        document.querySelector("#inputImage")
-            .addEventListener("click", function (event) {
-                if (document.querySelector("#changePhoto").classList.contains("hidden")){
-                    document.querySelector("#changePhoto").classList.remove("hidden");
-                }
-                else {
-                    document.querySelector("#changePhoto").classList.add("hidden");
-                }
-            })
-        document.querySelector("#close")
-            .addEventListener("click", function (event) {
-                if (document.querySelector("#changePhoto").classList.contains("hidden")){
-                    document.querySelector("#changePhoto").classList.remove("hidden");
-                }
-                else {
-                    document.querySelector("#changePhoto").classList.add("hidden");
-                }
-            })
+})
 
-    </script>
-    <%- include('./partials/footer.ejs') %>
+
+
+</script>
+<%- include('./partials/footer.ejs') %>

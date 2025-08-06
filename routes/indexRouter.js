@@ -14,7 +14,8 @@ const {
     profileController,
     profilePictureController,
     registerController, 
-    registerPageController,  
+    registerPageController, 
+    removeProfilePictureController 
 
 } = require("../controllers/indexController");
 
@@ -25,6 +26,7 @@ Router.post("/login",loginController)
 Router.get("/logout",logoutController)
 Router.get("/profile",isLoggedIn ,profileController)
 Router.post("/profilePicture",isLoggedIn ,upload.single('profilePicture'),profilePictureController)
+Router.get("/removeProfilePicture",isLoggedIn, removeProfilePictureController)
 
 
 

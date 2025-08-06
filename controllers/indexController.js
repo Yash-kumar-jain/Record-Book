@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const upload = require('../config/multer')
 
 
+
 module.exports.indexController = function(req,res){
     let message = req.flash('error')
     res.render("index",{error:message,isLoggedIn:false});
@@ -135,6 +136,24 @@ module.exports.profilePictureController =  async function(req,res){
         let user = await userModel.findOne({email:req.user.email})
 
         user.profilePicture = req.file.buffer
+        await user.save()
+        res.redirect("/profile")
+    }
+    catch(err){
+        console.error(err)
+        res.status(500).send("Internal Server Error")
+    }
+    
+
+}
+
+
+
+module.exports.removeProfilePictureController =  async function(req,res){
+    try{
+        let user = await userModel.findOne({email:req.user.email})
+
+        user.profilePicture = ""
         await user.save()
         res.redirect("/profile")
     }
