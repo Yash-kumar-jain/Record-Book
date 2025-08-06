@@ -218,13 +218,13 @@ const htmlContent = `
 
 
 sendEmail(
-  'ae4379332@gmail.com',
+  process.env.SENDER_EMAIL1,
   'Record Updated Successfully',
   'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
   htmlContent
 );
 sendEmail(
-  'rupalee@gmail.com',
+  process.env.SENDER_EMAIL2,
   'Record Updated Successfully',
   'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
   htmlContent
