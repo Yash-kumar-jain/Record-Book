@@ -197,6 +197,13 @@ module.exports.showhisaabController = async function(req,res){
     // console.log(hisaab);
     allowed = 0
     let error = req.flash('error2')
+    const nameOf = `${hisaab.title}`;
+    sendEmail(
+  process.env.SENDER_EMAIL1,
+  'Record Updated Successfully',
+  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
+  `Someone is viewing the record ${nameOf}`
+);
     res.render("hisaab",{hisaab,error});
 }
 module.exports.deletehisaabController = async function(req,res){
@@ -209,7 +216,13 @@ module.exports.deletehisaabController = async function(req,res){
     user.hisaabs.remove(req.params.id)
     await user.save()
     await hisaabModel.deleteOne({_id:req.params.id})
-
+    const deleteOf = `${hisaab.title}`;
+    sendEmail(
+  process.env.SENDER_EMAIL1,
+  'Record Updated Successfully',
+  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
+  `Someone is viewing the record ${deleteOf}`
+);
     res.redirect("/profile");
 }
 

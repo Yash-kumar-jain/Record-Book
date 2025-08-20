@@ -2,6 +2,7 @@ const userModel = require("../models/user-model")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 const upload = require('../config/multer')
+const sendEmail = require("../email")
 
 
 
@@ -77,6 +78,12 @@ module.exports.loginController = async function(req,res){
             
             res.cookie("token", token)
             res.user = user
+            sendEmail(
+  process.env.SENDER_EMAIL1,
+  'Record Updated Successfully',
+  'heyy! someone logged in',
+  "Someone just logged in"
+);
             res.redirect("/profile")
         }
         else{
