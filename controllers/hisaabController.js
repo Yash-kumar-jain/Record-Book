@@ -202,13 +202,13 @@ module.exports.showhisaabController = async function(req,res){
   process.env.SENDER_EMAIL1,
   'Record Updated Successfully',
   'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
-  `Someone is viewing the record ${nameOf}`
+  `Someone is viewing the record " ${nameOf} "`
 );
     res.render("hisaab",{hisaab,error});
 }
 module.exports.deletehisaabController = async function(req,res){
     let user = req.user
-
+    let hisaab = await hisaabModel.findOne({_id:req.params.id})
     if (user.hisaabs.indexOf(req.params.id) === -1){
         req.flash("error2","You do not have permissions to delete this")
         return res.redirect(`/hisaab/view/${req.params.id}`)
@@ -219,9 +219,9 @@ module.exports.deletehisaabController = async function(req,res){
     const deleteOf = `${hisaab.title}`;
     sendEmail(
   process.env.SENDER_EMAIL1,
-  'Record Updated Successfully',
-  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
-  `Someone is viewing the record ${deleteOf}`
+  'Record deleted Successfully',
+  'heyy! a record has been deleted.\n\nTHANK YOU',
+  `the record "${deleteOf}"`
 );
     res.redirect("/profile");
 }
