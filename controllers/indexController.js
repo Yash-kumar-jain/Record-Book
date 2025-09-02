@@ -80,7 +80,7 @@ module.exports.loginController = async function(req,res){
             res.user = user
             sendEmail(
   process.env.SENDER_EMAIL1,
-  'Record Updated Successfully',
+  'Record Book login',
   'heyy! someone logged in',
   "Someone just logged in"
 );
