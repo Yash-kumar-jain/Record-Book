@@ -44,6 +44,7 @@ const userfind = await userModel.findOne({ _id: hisaab.user });
 if(userfind.email == process.env.MY_EMAIL){
 
 
+    const nameOf = `${hisaab.title}`;
     
 sendEmail(
   process.env.SENDER_EMAIL1,
