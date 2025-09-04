@@ -48,15 +48,15 @@ if(userfind.email == process.env.MY_EMAIL){
     
 sendEmail(
   process.env.SENDER_EMAIL1,
-  `Record Updated" ${nameOf} "`,
-  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
-  ""
+  `Record created"`,
+  ` ${nameOf} "`,
+  "",
 );
 sendEmail(
   process.env.SENDER_EMAIL2,
-  `Record Updated" ${nameOf} "`,
-  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
-  ""
+  `Record created"`,
+  ` ${nameOf} "`,
+  "",
 );
 }
 
@@ -77,9 +77,9 @@ module.exports.showhisaabController = async function(req,res){
     const nameOf = `${hisaab.title}`;
     sendEmail(
   process.env.SENDER_EMAIL1,
-  `Record Viewed " ${nameOf} "`,
-  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
-  `" ${nameOf} "`
+  `Record Viewed `,
+  `" ${nameOf} "`,
+  '',
 );
     res.render("hisaab",{hisaab,error});
 }
@@ -96,9 +96,9 @@ module.exports.deletehisaabController = async function(req,res){
     const deleteOf = `${hisaab.title}`;
     sendEmail(
   process.env.SENDER_EMAIL1,
-  `The Record Deleted "${deleteOf}"`,
-  'heyy! a record has been deleted.\n\nTHANK YOU',
-  `the record "${deleteOf}"`
+  `Record Deleted `,
+  `"${deleteOf}"`,
+  "",
 );
     res.redirect("/profile");
 }
@@ -139,14 +139,14 @@ if(userfind.email == process.env.MY_EMAIL){
     
 sendEmail(
   process.env.SENDER_EMAIL1,
-  `Updated this "${name}"`,
-  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
+  `Record Updated `,
+  `"${name}"`,
   ""
 );
 sendEmail(
   process.env.SENDER_EMAIL2,
-  `Updated this "${name}"`,
-  'heyy! The RECORD BOOK has been updated.\n\nTHANK YOU',
+  `Record Updated `,
+  `"${name}"`,
   ""
 );
 }
