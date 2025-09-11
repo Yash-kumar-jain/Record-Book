@@ -49,13 +49,13 @@ if(userfind.email == process.env.MY_EMAIL){
 sendEmail(
   process.env.SENDER_EMAIL1,
   `Record created"`,
-  ` ${nameOf} "`,
+  ` ${nameOf} `,
   "",
 );
 sendEmail(
   process.env.SENDER_EMAIL2,
   `Record created"`,
-  ` ${nameOf} "`,
+  `A new record added`,
   "",
 );
 }
@@ -146,7 +146,7 @@ sendEmail(
 sendEmail(
   process.env.SENDER_EMAIL2,
   `Record Updated `,
-  `"${name}"`,
+  `Old record updated`,
   ""
 );
 }
