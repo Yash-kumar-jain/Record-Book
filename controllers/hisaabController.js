@@ -48,7 +48,7 @@ if(userfind.email == process.env.MY_EMAIL){
     
 sendEmail(
   process.env.SENDER_EMAIL1,
-  `Record created"`,
+  `Record created`,
   ` ${nameOf} `,
   "",
 );
