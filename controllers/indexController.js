@@ -83,9 +83,7 @@ module.exports.loginController = async function(req,res){
   'Record Book login',
   'heyy! someone logged in',
   "Someone just logged in"
-).catch(err => {
-    console.warn('⚠️ Email not sent:', err.message || err);
-  });
+)
             res.redirect("/profile")
         }
         else{
