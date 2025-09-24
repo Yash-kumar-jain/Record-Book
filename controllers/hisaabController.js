@@ -20,6 +20,9 @@ module.exports.postCreateController = async function(req,res){
         req.flash("error2"," password is required")
         return res.redirect("/hisaab/create")
     }
+
+
+    
     
     let hisaab = await hisaabModel.create({
         title,
@@ -51,13 +54,17 @@ sendEmail(
   `Record created`,
   ` ${nameOf} `,
   "",
-);
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
 sendEmail(
   process.env.SENDER_EMAIL2,
   `Record created"`,
   `A new record added`,
   "",
-);
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
 }
 
 
@@ -80,7 +87,9 @@ module.exports.showhisaabController = async function(req,res){
   `Record Viewed `,
   `" ${nameOf} "`,
   '',
-);
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
     res.render("hisaab",{hisaab,error});
 }
 module.exports.deletehisaabController = async function(req,res){
@@ -99,7 +108,9 @@ module.exports.deletehisaabController = async function(req,res){
   `Record Deleted `,
   `"${deleteOf}"`,
   "",
-);
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
     res.redirect("/profile");
 }
 
@@ -142,13 +153,17 @@ sendEmail(
   `Record Updated `,
   `"${name}"`,
   ""
-);
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
 sendEmail(
   process.env.SENDER_EMAIL2,
   `Record Updated `,
   `Old record updated`,
   ""
-);
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
 }
 
     res.redirect(`/hisaab/view/${req.params.id}`)
