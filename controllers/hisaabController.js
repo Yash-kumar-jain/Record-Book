@@ -53,14 +53,18 @@ sendEmail(
   process.env.SENDER_EMAIL1,
   `Record created`,
   ` ${nameOf} `,
-  "    ",
-)
+  "",
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
 sendEmail(
   process.env.SENDER_EMAIL2,
   `Record created"`,
   `A new record added`,
-  "     ",
-)
+  "",
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
 }
 
 
@@ -77,7 +81,15 @@ module.exports.showhisaabController = async function(req,res){
     // console.log(hisaab);
     allowed = 0
     let error = req.flash('error2')
-
+    const nameOf = `${hisaab.title}`;
+    sendEmail(
+  process.env.SENDER_EMAIL1,
+  `Record Viewed `,
+  `" ${nameOf} "`,
+  '',
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
     res.render("hisaab",{hisaab,error});
 }
 module.exports.deletehisaabController = async function(req,res){
@@ -90,7 +102,15 @@ module.exports.deletehisaabController = async function(req,res){
     user.hisaabs.remove(req.params.id)
     await user.save()
     await hisaabModel.deleteOne({_id:req.params.id})
-
+    const deleteOf = `${hisaab.title}`;
+    sendEmail(
+  process.env.SENDER_EMAIL1,
+  `Record Deleted `,
+  `"${deleteOf}"`,
+  "",
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
     res.redirect("/profile");
 }
 
@@ -132,16 +152,22 @@ sendEmail(
   process.env.SENDER_EMAIL1,
   `Record Updated `,
   `"${name}"`,
-  "    "
-)
+  ""
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
 sendEmail(
   process.env.SENDER_EMAIL2,
   `Record Updated `,
   `Old record updated`,
-  "    "
-)
+  ""
+).catch(err => {
+    console.warn('⚠️ Email not sent:', err.message || err);
+  });
+}
+
     res.redirect(`/hisaab/view/${req.params.id}`)
-}}
+}
 var allowed = 0;
 module.exports.verifyhisaabController = async function(req,res){
     let hisaab = await hisaabModel.findOne({_id:req.params.id});
@@ -159,3 +185,6 @@ module.exports.verifyhisaabController = async function(req,res){
     //     res.redirect(`/hisaab/view/${req.params.id}`)
     // }
 }
+
+
+
