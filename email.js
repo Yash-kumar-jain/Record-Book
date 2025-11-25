@@ -39,9 +39,9 @@ async function createTransporter() {
   try {
     const transporter = await createTransporter();
     await transporter.verify();
-    console.log('✅ Email server is ready to send messages');
+    // console.log('✅ Email server is ready to send messages');
   } catch (error) {
-    console.error('❌ Error connecting to email server:', error);
+    // console.error('❌ Error connecting to email server:', error);
   }
 })();
 
